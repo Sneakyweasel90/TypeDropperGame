@@ -3,7 +3,7 @@ import pygame
 WIDTH, HEIGHT = 800, 600
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-FALL_SPEED = 8
+FALL_SPEED = 2
 BACKGROUND_IMAGE = pygame.image.load('TypeDropper.png')
 
 pygame.font.init()
