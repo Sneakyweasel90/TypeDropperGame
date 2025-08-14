@@ -1,5 +1,3 @@
-from getpass import fallback_getpass
-
 import pygame, random
 from settings import *
 from utils import load_words
