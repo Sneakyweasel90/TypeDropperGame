@@ -1,0 +1,5 @@
+pyinstaller --onefile --windowed ^
+    --add-data "assets;assets" ^
+    main.py
+
+to install into one exe file
