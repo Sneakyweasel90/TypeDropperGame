@@ -51,13 +51,25 @@ def play_game():
             lives -= 1
             current_word = random.choice(words)
             word_x, word_y = random.randint(50, WIDTH - 150), 0
+            typed_text = ""
 
         if lives <= 0:
             return lose_screen(score)
 
 
+        x_offset = 0
         #draw word & typed text
-        screen.blit(FONT.render(current_word, True, BLACK), (word_x, word_y))
+        for i, letter in enumerate(current_word):
+            color = BLACK
+            if i < len(typed_text):
+                if typed_text[i].lower() == letter.lower():
+                    color = (0, 200, 0)
+                else:
+                    color = (200, 0, 0)
+            letter_surface = FONT.render(letter, True, color)
+            screen.blit(letter_surface, (word_x + x_offset, word_y))
+            x_offset += letter_surface.get_width()
+
         screen.blit(FONT.render(typed_text, True, BLACK), (20, HEIGHT - 50))
         screen.blit(FONT.render(f"Score: {score}", True, BLACK), (WIDTH - 200, 20))
         screen.blit(FONT.render(f"Speed: {fall_speed:.1f}", True, BLACK), (WIDTH - 500, 20))
