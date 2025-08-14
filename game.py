@@ -1,3 +1,5 @@
+from getpass import fallback_getpass
+
 import pygame, random
 from settings import *
 from utils import load_words
@@ -5,6 +7,8 @@ from utils import load_words
 def play_game():
     words = list(set(load_words("easyWords.txt")))
     last_word = None
+    score = 0
+    fall_speed = FALL_SPEED
 
     def get_random_word():
         nonlocal last_word
@@ -33,13 +37,15 @@ def play_game():
                     typed_text = typed_text[:-1]
                 elif event.key == pygame.K_RETURN:
                     if typed_text.lower() == current_word.lower():
+                        score += 100
+                        fall_speed += 0.1
                         current_word = random.choice(words)
                         word_x, word_y = random.randint(50, WIDTH - 150), 0
                     typed_text = ""
                 else:
                     typed_text += event.unicode
 
-        word_y += FALL_SPEED
+        word_y += fall_speed
         if word_y > HEIGHT:
             current_word = random.choice(words)
             word_x, word_y = random.randint(50, WIDTH - 150), 0
@@ -47,6 +53,7 @@ def play_game():
         #draw word & typed text
         screen.blit(FONT.render(current_word, True, BLACK), (word_x, word_y))
         screen.blit(FONT.render(typed_text, True, BLACK), (20, HEIGHT - 50))
+        screen.blit(FONT.render(f"Score: {score}", True, BLACK), (WIDTH - 200, 20))
 
         pygame.display.flip()
         clock.tick(60)
