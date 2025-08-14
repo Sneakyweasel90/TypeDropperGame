@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('words.txt', '.')],
+    datas=[('assets', 'assets')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

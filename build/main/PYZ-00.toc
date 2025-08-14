@@ -514,6 +514,7 @@
   ('logging',
    'C:\\Users\\neilm\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\logging\\__init__.py',
    'PYMODULE'),
+  ('loseScreen', 'E:\\Portfolio\\TypeDropper\\loseScreen.py', 'PYMODULE'),
   ('lzma',
    'C:\\Users\\neilm\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\lzma.py',
    'PYMODULE'),

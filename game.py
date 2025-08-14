@@ -4,7 +4,7 @@ from utils import load_words
 from loseScreen import lose_screen
 
 def play_game():
-    words = list(set(load_words("easyWords.txt")))
+    words = list(set(load_words("assets/easyWords.txt")))
     last_word = None
     score = 0
     fall_speed = FALL_SPEED
