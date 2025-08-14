@@ -3,8 +3,18 @@ from settings import *
 from utils import load_words
 
 def play_game():
-    words = load_words("words.txt")
-    current_word = random.choice(words)
+    words = list(set(load_words("easyWords.txt")))
+    last_word = None
+
+    def get_random_word():
+        nonlocal last_word
+        word= random.choice(words)
+        while word == last_word:
+            word= random.choice(words)
+        last_word = word
+        return word
+
+    current_word = get_random_word()
     word_x, word_y = random.randint(50, WIDTH - 150), 0
     typed_text = ""
 

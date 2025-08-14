@@ -13,4 +13,5 @@ def resource_path(relative_path):
 def load_words(filepath):
     full_path = resource_path(filepath)
     with open(full_path, "r") as f:
-        return [line.strip() for line in f if line.strip()]
+        text = f.read()
+        return [word.strip() for word in text.split(',') if word.strip()]
