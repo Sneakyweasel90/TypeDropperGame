@@ -27,7 +27,9 @@ def play_game():
             if event.type == pygame.QUIT:
                 return
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_ESCAPE:
+                    return
+                elif event.key == pygame.K_BACKSPACE:
                     typed_text = typed_text[:-1]
                 elif event.key == pygame.K_RETURN:
                     if typed_text.lower() == current_word.lower():

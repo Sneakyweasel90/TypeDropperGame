@@ -1,12 +1,12 @@
 import pygame
-from settings import WIDTH, HEIGHT, WHITE, BLACK, FONT
+from settings import WIDTH, HEIGHT, WHITE, BLACK, FONT, BACKGROUND_IMAGE
 
 def show_menu():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
     while True:
-        screen.fill(WHITE)
+        screen.blit(BACKGROUND_IMAGE, (0, 0))
         text = FONT.render("Press SPACE to start", True, BLACK)
         screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2))
 
