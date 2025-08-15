@@ -60,7 +60,7 @@ def play_game(difficulty):
             typed_text = ""
 
         if lives <= 0:
-            return lose_screen(score)
+            return lose_screen(score, difficulty)
 
 
         x_offset = 0
