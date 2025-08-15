@@ -48,7 +48,7 @@ def show_menu():
 
         screen.blit(BACKGROUND_IMAGE, (0, 0))
 
-        title = FONT.render("Word Drop Game", True, BLACK)
+        title = FONT.render("Word Drop", True, BLACK)
         title_rect = title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 100))
         screen.blit(title, title_rect)
 
