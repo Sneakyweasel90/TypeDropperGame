@@ -1,7 +1,7 @@
 import pygame, random
 from settings import *
 from utils import load_words
-from loseScreen import lose_screen, load_highest_score
+from loseScreen import lose_screen
 
 
 def play_game(difficulty):
@@ -64,7 +64,6 @@ def play_game(difficulty):
 
 
         x_offset = 0
-        #draw word & typed text
         for i, letter in enumerate(current_word):
             color = BLACK
             if i < len(typed_text):
