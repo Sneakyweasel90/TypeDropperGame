@@ -32,6 +32,33 @@ def play_game(difficulty):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
+    waiting = True
+    while waiting:
+        screen.fill(WHITE)
+        message = FONT.render("Press 'SPACE' to start!", True, BLACK)
+        msg_rect = message.get_rect(center=(WIDTH / 2, HEIGHT / 2))
+        screen.blit(message, msg_rect)
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return
+                if event.key == pygame.K_SPACE:
+                    waiting = False
+        clock.tick(60)
+
+    for count in range(3, 0, -1):
+        screen.fill(WHITE)
+        countdown_text = FONT.render(str(count), True, BLACK)
+        text_rect = countdown_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
+        screen.blit(countdown_text, text_rect)
+        pygame.display.flip()
+        pygame.time.delay(1000)
+
+
     while True:
         screen.fill(WHITE)
         for event in pygame.event.get():
