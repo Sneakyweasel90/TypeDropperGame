@@ -1,5 +1,6 @@
 pyinstaller --onefile --windowed ^
     --add-data "assets;assets" ^
+    --add-data ".env;." ^
     main.py
 
 to install into one exe file
