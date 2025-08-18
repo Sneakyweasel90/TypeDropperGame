@@ -3,7 +3,6 @@ from settings import *
 from utils import load_words
 from loseScreen import lose_screen
 
-
 def play_game(difficulty):
     if difficulty == "easy":
         words = list(set(load_words("assets/easyWords.txt")))
@@ -19,9 +18,9 @@ def play_game(difficulty):
 
     def get_random_word():
         nonlocal last_word
-        word= random.choice(words)
+        word = random.choice(words)
         while word == last_word:
-            word= random.choice(words)
+            word = random.choice(words)
         last_word = word
         return word
 
@@ -58,7 +57,6 @@ def play_game(difficulty):
         pygame.display.flip()
         pygame.time.delay(1000)
 
-
     while True:
         screen.fill(WHITE)
         for event in pygame.event.get():
@@ -73,7 +71,7 @@ def play_game(difficulty):
                     if typed_text.lower() == current_word.lower():
                         score += 100
                         fall_speed += 0.1
-                        current_word = random.choice(words)
+                        current_word = get_random_word()  # Fixed: use get_random_word() instead of random.choice
                         word_x, word_y = random.randint(50, WIDTH - 150), 0
                     typed_text = ""
                 else:
@@ -82,13 +80,12 @@ def play_game(difficulty):
         word_y += fall_speed
         if word_y > HEIGHT:
             lives -= 1
-            current_word = random.choice(words)
+            current_word = get_random_word()  # Fixed: use get_random_word() instead of random.choice
             word_x, word_y = random.randint(50, WIDTH - 150), 0
             typed_text = ""
 
         if lives <= 0:
             return lose_screen(score, difficulty)
-
 
         x_offset = 0
         for i, letter in enumerate(current_word):
