@@ -1,5 +1,4 @@
 import pygame.display
-
 from menu import show_menu
 from game import play_game
 
