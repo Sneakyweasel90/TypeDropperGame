@@ -1036,6 +1036,7 @@
   ('json.scanner',
    'C:\\Users\\neilm\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\json\\scanner.py',
    'PYMODULE'),
+  ('leaderboards', 'E:\\Portfolio\\TypeDropper\\leaderboards.py', 'PYMODULE'),
   ('logging',
    'C:\\Users\\neilm\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\logging\\__init__.py',
    'PYMODULE'),
