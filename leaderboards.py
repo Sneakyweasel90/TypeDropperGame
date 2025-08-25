@@ -1,6 +1,6 @@
 import pygame
 import requests
-from settings import WIDTH, HEIGHT, WHITE, BLACK, FONT
+from settings import *
 from animated_button import AnimatedButton
 
 API_URL = "https://typedropperapi-1.onrender.com"
@@ -74,8 +74,8 @@ def show_leaderboards_menu():
         for b in buttons.values():
             b.update(dt)
 
-        screen.fill(WHITE)
-        title_text = FONT.render("Select Leaderboard", True, BLACK)
+        screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
+        title_text = FONT.render("Select Leaderboard", True, WHITE)
         screen.blit(title_text, title_text.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.2))))
 
         for b in buttons.values():
