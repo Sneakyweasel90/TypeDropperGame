@@ -67,20 +67,20 @@ def play_game(difficulty):
                     return
                 elif event.key == pygame.K_BACKSPACE:
                     typed_text = typed_text[:-1]
-                elif event.key == pygame.K_RETURN:
-                    if typed_text.lower() == current_word.lower():
-                        score += 100
-                        fall_speed += 0.1
-                        current_word = get_random_word()  # Fixed: use get_random_word() instead of random.choice
-                        word_x, word_y = random.randint(50, WIDTH - 150), 0
-                    typed_text = ""
-                else:
+                elif event.unicode.isalpha():
                     typed_text += event.unicode
+
+        if typed_text.lower() == current_word.lower():
+            score += 100
+            fall_speed += 0.1
+            current_word = get_random_word()
+            word_x, word_y = random.randint(50, WIDTH - 150), 0
+            typed_text = ""
 
         word_y += fall_speed
         if word_y > HEIGHT:
             lives -= 1
-            current_word = get_random_word()  # Fixed: use get_random_word() instead of random.choice
+            current_word = get_random_word()
             word_x, word_y = random.randint(50, WIDTH - 150), 0
             typed_text = ""
 
