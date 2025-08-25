@@ -110,24 +110,24 @@ def show_leaderboard(difficulty):
         dt = clock.tick(60) / 1000
         button_back.update(dt)
 
-        screen.fill(WHITE)
-        title_text = FONT.render(f"{difficulty.title()} Leaderboard", True, BLACK)
+        screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
+        title_text = FONT.render(f"{difficulty.title()} Leaderboard", True, WHITE)
         screen.blit(title_text, title_text.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.08))))
 
         header_font = pygame.font.Font(None, int(HEIGHT * 0.05))
         y_start = int(HEIGHT * 0.15)
-        screen.blit(header_font.render("Rank", True, BLACK), (int(WIDTH * 0.3), y_start))
-        screen.blit(header_font.render("Name", True, BLACK), (int(WIDTH * 0.5), y_start))
-        screen.blit(header_font.render("Score", True, BLACK), (int(WIDTH * 0.7), y_start))
+        screen.blit(header_font.render("Rank", True, WHITE), (int(WIDTH * 0.3), y_start))
+        screen.blit(header_font.render("Name", True, WHITE), (int(WIDTH * 0.5), y_start))
+        screen.blit(header_font.render("Score", True, WHITE), (int(WIDTH * 0.7), y_start))
 
         entry_font = pygame.font.Font(None, int(HEIGHT * 0.04))
         y_offset = int(HEIGHT * 0.22)
         row_spacing = int(HEIGHT * 0.06)
 
         for i, entry in enumerate(scores[:10]):
-            screen.blit(entry_font.render(f"{i + 1}.", True, BLACK), (int(WIDTH * 0.3), y_offset))
-            screen.blit(entry_font.render(entry['name'], True, BLACK), (int(WIDTH * 0.5), y_offset))
-            screen.blit(entry_font.render(str(entry['score']), True, BLACK), (int(WIDTH * 0.7), y_offset))
+            screen.blit(entry_font.render(f"{i + 1}.", True, WHITE), (int(WIDTH * 0.3), y_offset))
+            screen.blit(entry_font.render(entry['name'], True, WHITE), (int(WIDTH * 0.5), y_offset))
+            screen.blit(entry_font.render(str(entry['score']), True, WHITE), (int(WIDTH * 0.7), y_offset))
             y_offset += row_spacing
 
         button_back.draw(screen)
