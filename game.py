@@ -25,16 +25,17 @@ def play_game(difficulty):
         return word
 
     current_word = get_random_word()
-    word_x, word_y = random.randint(50, WIDTH - 150), 0
+    word_x, word_y = random.randint(int(WIDTH*0.05), int(WIDTH*0.85)), 0
     typed_text = ""
 
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
     waiting = True
+    start_font = pygame.font.Font(None, int(HEIGHT * 0.07))
     while waiting:
         screen.fill(WHITE)
-        message = FONT.render("Press 'SPACE' to start!", True, BLACK)
+        message = start_font.render("Press 'SPACE' to start!", True, BLACK)
         msg_rect = message.get_rect(center=(WIDTH / 2, HEIGHT / 2))
         screen.blit(message, msg_rect)
         pygame.display.flip()
@@ -49,13 +50,17 @@ def play_game(difficulty):
                     waiting = False
         clock.tick(60)
 
+    countdown_font = pygame.font.Font(None, int(HEIGHT * 0.15))
     for count in range(3, 0, -1):
         screen.fill(WHITE)
-        countdown_text = FONT.render(str(count), True, BLACK)
+        countdown_text = countdown_font.render(str(count), True, BLACK)
         text_rect = countdown_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
         screen.blit(countdown_text, text_rect)
         pygame.display.flip()
         pygame.time.delay(1000)
+
+    letter_font = pygame.font.Font(None, int(HEIGHT * 0.07))
+    hud_font = pygame.font.Font(None, int(HEIGHT * 0.05))
 
     while True:
         screen.fill(WHITE)
@@ -74,14 +79,14 @@ def play_game(difficulty):
             score += 100
             fall_speed += 0.1
             current_word = get_random_word()
-            word_x, word_y = random.randint(50, WIDTH - 150), 0
+            word_x, word_y = random.randint(int(WIDTH*0.05), int(WIDTH*0.85)), 0
             typed_text = ""
 
         word_y += fall_speed
         if word_y > HEIGHT:
             lives -= 1
             current_word = get_random_word()
-            word_x, word_y = random.randint(50, WIDTH - 150), 0
+            word_x, word_y = random.randint(int(WIDTH*0.05), int(WIDTH*0.85)), 0
             typed_text = ""
 
         if lives <= 0:
@@ -95,14 +100,17 @@ def play_game(difficulty):
                     color = (0, 200, 0)
                 else:
                     color = (200, 0, 0)
-            letter_surface = FONT.render(letter, True, color)
+            letter_surface = letter_font.render(letter, True, color)
             screen.blit(letter_surface, (word_x + x_offset, word_y))
             x_offset += letter_surface.get_width()
 
-        screen.blit(FONT.render(typed_text, True, BLACK), (20, HEIGHT - 50))
-        screen.blit(FONT.render(f"Score: {score}", True, BLACK), (WIDTH - 200, 20))
-        screen.blit(FONT.render(f"Speed: {fall_speed:.1f}", True, BLACK), (WIDTH - 500, 20))
-        screen.blit(FONT.render(f"Lives: {lives}", True, BLACK), (WIDTH - 800, 20))
+        bar_height = int(HEIGHT * 0.08)
+        pygame.draw.rect(screen, (50, 50, 50), (0, 0, WIDTH, bar_height))
+
+        padding = int(WIDTH * 0.02)
+        screen.blit(hud_font.render(f"Lives: {lives}", True, WHITE), (padding, bar_height // 4))
+        screen.blit(hud_font.render(f"Speed: {fall_speed:.1f}", True, WHITE), (WIDTH // 2 - 50, bar_height // 4))
+        screen.blit(hud_font.render(f"Score: {score}", True, WHITE), (WIDTH - 150 - padding, bar_height // 4))
 
         pygame.display.flip()
         clock.tick(60)

@@ -52,7 +52,7 @@ def get_player_name(score, difficulty):
     bottom_font = pygame.font.Font(None, int(HEIGHT * 0.04))
 
     while True:
-        screen.fill(WHITE)
+        screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
 
         screen.blit(title_font.render("NEW HIGH SCORE!", True, (255, 0, 0)),
                     title_font.render("NEW HIGH SCORE!", True, (255, 0, 0)).get_rect(center=(WIDTH//2, int(HEIGHT*0.2))))
@@ -110,7 +110,7 @@ def show_leaderboard(difficulty):
     while True:
         dt = clock.tick(60)/1000
         button_back.update(dt)
-        screen.fill(WHITE)
+        screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
 
         title_font = pygame.font.Font(None, int(HEIGHT*0.08))
         screen.blit(title_font.render(f"{difficulty.title()} Mode Leaderboard", True, BLACK),
@@ -147,6 +147,7 @@ def show_leaderboard(difficulty):
 def lose_screen(final_score, difficulty):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
+    screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
 
     player_name = None
     if is_high_score(final_score, difficulty):
@@ -174,7 +175,7 @@ def lose_screen(final_score, difficulty):
         dt = clock.tick(60)/1000
         button_continue.update(dt)
         button_leaderboard.update(dt)
-        screen.fill(WHITE)
+        screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
 
         screen.blit(FONT.render("Game Over!", True, BLACK),
                     (WIDTH//2 - FONT.size("Game Over!")[0]//2, y_game_over))

@@ -50,7 +50,7 @@ def show_menu():
 
         screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
 
-        title = title_font.render("Type Dropper", True, WHITE)
+        title = title_font.render("Type Dropper", True, BLACK)
         title_rect = title.get_rect(center=(WIDTH // 2, int(HEIGHT * 0.2)))
         screen.blit(title, title_rect)
 

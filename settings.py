@@ -14,7 +14,7 @@ BLACK = (0, 0, 0)
 
 FALL_SPEED = int(HEIGHT * 0.003)
 
-BACKGROUND_IMAGE = pygame.image.load(resource_path("assets/keyboard.jpg"))
+BACKGROUND_IMAGE = pygame.image.load(resource_path("assets/gradient-toxic.jpg"))
 BACKGROUND_IMAGE = pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT))
 
 pygame.font.init()
