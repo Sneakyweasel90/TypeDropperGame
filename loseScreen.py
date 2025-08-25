@@ -1,45 +1,30 @@
-import os
-import sys
 import pygame
-from operator import itemgetter
-from pymongo import MongoClient
+import requests
 from settings import *
-from utils import *
 from animated_button import AnimatedButton
-from dotenv import load_dotenv
-from pathlib import Path
 
-
-base_path = getattr(sys, "_MEIPASS", Path(__file__).parent)
-dotenv_path = Path(base_path) / ".env"
-load_dotenv(dotenv_path=dotenv_path)
-
-MONGO_USER = os.getenv("MONGO_USER")
-MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
-MONGO_DB = os.getenv("MONGO_DB")
-
-if None in [MONGO_USER, MONGO_PASSWORD, MONGO_DB]:
-    raise ValueError("MongoDB credentials missing! Check your .env or environment variables.")
-
-MONGO_URI = f"mongodb+srv://{MONGO_USER}:{MONGO_PASSWORD}@typedropperapi.mkvil3t.mongodb.net/{MONGO_DB}?retryWrites=true&w=majority"
-client = MongoClient(MONGO_URI)
-db = client[MONGO_DB]
-scores_collection = db['scores']
+API_URL = "https://typedropperapi-1.onrender.com"
 
 def post_score_to_db(name, score, difficulty):
     try:
-        data = {"name": name, "score": score, "difficulty": difficulty}
-        result = scores_collection.insert_one(data)
-        print(f"Score saved with id: {result.inserted_id}")
+        r = requests.post(f"{API_URL}/typedropper/{difficulty}", json={
+            "name": name,
+            "score": score
+        })
+        if r.status_code == 200:
+            print("Score saved successfully!")
+        else:
+            print(f"Failed to save score: {r.status_code} {r.text}")
     except Exception as e:
-        print(f"Error saving score to DB: {e}")
+        print(f"Error saving score to API: {e}")
 
 def load_leaderboard_from_db(difficulty):
     try:
-        leaderboard = list(scores_collection.find({"difficulty": difficulty}).sort("score", -1).limit(10))
-        return [{"name": e["name"], "score": e["score"], "difficulty": e["difficulty"]} for e in leaderboard]
+        r = requests.get(f"{API_URL}/typedropper/{difficulty}")
+        r.raise_for_status()
+        return r.json()
     except Exception as e:
-        print(f"Error loading leaderboard: {e}")
+        print(f"Error fetching leaderboard from API: {e}")
         return []
 
 def is_high_score(score, difficulty):
@@ -132,11 +117,11 @@ def show_leaderboard(difficulty):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return
+                return False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return
+                return False
             elif button_back.handle_event(event):
-                return
+                return False
 
         pygame.display.flip()
 

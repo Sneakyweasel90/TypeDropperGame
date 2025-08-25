@@ -1,48 +1,33 @@
-import os
-import sys
 import pygame
-from pymongo import MongoClient
-from pathlib import Path
-from dotenv import load_dotenv
+import requests
 from settings import WIDTH, HEIGHT, WHITE, BLACK, FONT
 from animated_button import AnimatedButton
 
-base_path = getattr(sys, "_MEIPASS", Path(__file__).parent)
-dotenv_path = Path(base_path) / ".env"
-load_dotenv(dotenv_path=dotenv_path)
-
-MONGO_USER = os.getenv("MONGO_USER")
-MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
-MONGO_DB = os.getenv("MONGO_DB")
-
-if None in [MONGO_USER, MONGO_PASSWORD, MONGO_DB]:
-    raise ValueError("MongoDB credentials missing! Check your .env or environment variables.")
-
-MONGO_URI = f"mongodb+srv://{MONGO_USER}:{MONGO_PASSWORD}@typedropperapi.mkvil3t.mongodb.net/{MONGO_DB}?retryWrites=true&w=majority"
-client = MongoClient(MONGO_URI)
-db = client[MONGO_DB]
-scores_collection = db["scores"]
+API_URL = "https://typedropperapi-1.onrender.com"
 
 def run_leaderboards():
     while True:
         difficulty = show_leaderboards_menu()
         if difficulty is None:
             break
-
         show_leaderboard(difficulty)
 
 def post_score_to_db(name, score, difficulty):
     try:
-        data = {"name": name, "score": score, "difficulty": difficulty}
-        result = scores_collection.insert_one(data)
-        print(f"Score saved with id: {result.inserted_id}")
+        r = requests.post(f"{API_URL}/typedropper/{difficulty}", json={
+            "name": name,
+            "score": score
+        })
+        if r.status_code != 200:
+            print(f"Failed to save score: {r.status_code}")
     except Exception as e:
-        print(f"Error saving score to DB: {e}")
+        print(f"Error posting score: {e}")
 
 def load_leaderboard_from_db(difficulty):
     try:
-        leaderboard = list(scores_collection.find({"difficulty": difficulty}).sort("score", -1).limit(10))
-        return [{"name": e["name"], "score": e["score"], "difficulty": e["difficulty"]} for e in leaderboard]
+        r = requests.get(f"{API_URL}/typedropper/{difficulty}")
+        r.raise_for_status()
+        return r.json()  # list of dicts
     except Exception as e:
         print(f"Error loading leaderboard: {e}")
         return []
@@ -57,21 +42,12 @@ def show_leaderboards_menu():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
-    button_easy = AnimatedButton(WIDTH//2 - 200, HEIGHT//2 - 60, 400, 50,
-                                 "Easy Leaderboard", color=(0,200,0), hover_color=(0,255,0))
-    button_medium = AnimatedButton(WIDTH//2 - 200, HEIGHT//2, 400, 50,
-                                   "Medium Leaderboard", color=(255,165,0), hover_color=(255,200,0))
-    button_hard = AnimatedButton(WIDTH//2 - 200, HEIGHT//2 + 60, 400, 50,
-                                 "Hard Leaderboard", color=(255,69,0), hover_color=(255,100,0))
-    button_back = AnimatedButton(WIDTH//2 - 75, HEIGHT - 80, 150, 50,
-                                 "Back", color=(100,100,100), hover_color=(150,150,150))
+    button_easy = AnimatedButton(WIDTH//2 - 200, HEIGHT//2 - 60, 400, 50, "Easy Leaderboard", color=(0,200,0), hover_color=(0,255,0))
+    button_medium = AnimatedButton(WIDTH//2 - 200, HEIGHT//2, 400, 50, "Medium Leaderboard", color=(255,165,0), hover_color=(255,200,0))
+    button_hard = AnimatedButton(WIDTH//2 - 200, HEIGHT//2 + 60, 400, 50, "Hard Leaderboard", color=(255,69,0), hover_color=(255,100,0))
+    button_back = AnimatedButton(WIDTH//2 - 75, HEIGHT - 80, 150, 50, "Back", color=(100,100,100), hover_color=(150,150,150))
 
-    buttons = {
-        "easy": button_easy,
-        "medium": button_medium,
-        "hard": button_hard,
-        "back": button_back
-    }
+    buttons = {"easy": button_easy, "medium": button_medium, "hard": button_hard, "back": button_back}
 
     while True:
         dt = clock.tick(60)/1000
@@ -90,7 +66,6 @@ def show_leaderboards_menu():
                 return None
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return None
-
             for diff, b in buttons.items():
                 if b.handle_event(event):
                     if diff == "back":
@@ -99,12 +74,10 @@ def show_leaderboards_menu():
 
         pygame.display.flip()
 
-
 def show_leaderboard(difficulty):
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
-    button_back = AnimatedButton(WIDTH//2 - 75, HEIGHT - 80, 150, 50,
-                                 "Back", color=(100,100,100), hover_color=(150,150,150))
+    button_back = AnimatedButton(WIDTH//2 - 75, HEIGHT - 80, 150, 50, "Back", color=(100,100,100), hover_color=(150,150,150))
 
     scores = load_leaderboard_from_db(difficulty)
 
