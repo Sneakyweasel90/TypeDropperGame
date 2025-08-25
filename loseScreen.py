@@ -51,6 +51,10 @@ def get_player_name(score, difficulty):
     name_font = pygame.font.Font(None, int(HEIGHT * 0.12))
     bottom_font = pygame.font.Font(None, int(HEIGHT * 0.04))
 
+    banned_words = ["kkk", "gay", "fag", "fuk", "fuc", "ass", "nig", "f@g", "tit"]
+    bottom_text = "Type letters to enter name, ESC to cancel"
+    invalid_name_warning = False
+
     while True:
         screen.blit(pygame.transform.scale(BACKGROUND_IMAGE, (WIDTH, HEIGHT)), (0, 0))
 
@@ -68,18 +72,15 @@ def get_player_name(score, difficulty):
             cursor_timer = 0
         if cursor_visible and len(player_name) < 3:
             display_name = display_name[:len(player_name)] + '|' + display_name[len(player_name)+1:]
-
         screen.blit(name_font.render(display_name, True, BLACK),
                     name_font.render(display_name, True, BLACK).get_rect(center=(WIDTH//2, int(HEIGHT*0.5))))
 
-        if len(player_name) == 3:
-            bottom_text = "Press ENTER to save, ESC to cancel"
-        else:
-            bottom_text = "Type letters to enter name, ESC to cancel"
         screen.blit(bottom_font.render(bottom_text, True, BLACK),
                     bottom_font.render(bottom_text, True, BLACK).get_rect(center=(WIDTH//2, int(HEIGHT*0.65))))
 
         pygame.display.flip()
+
+        enter_pressed = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,11 +89,26 @@ def get_player_name(score, difficulty):
                 if event.key == pygame.K_ESCAPE:
                     return None
                 elif event.key == pygame.K_RETURN and len(player_name) == 3:
-                    return player_name.upper()
+                    enter_pressed = True
                 elif event.key == pygame.K_BACKSPACE:
                     player_name = player_name[:-1]
+                    invalid_name_warning = False
                 elif len(player_name) < 3 and event.unicode.isalpha():
                     player_name += event.unicode.upper()
+                    invalid_name_warning = False
+
+        if enter_pressed:
+            if player_name.lower() in banned_words:
+                bottom_text = "This name is not allowed!"
+                invalid_name_warning = True
+            else:
+                return player_name.upper()
+
+        if not invalid_name_warning:
+            if len(player_name) == 3:
+                bottom_text = "Press ENTER to save, ESC to cancel"
+            else:
+                bottom_text = "Type letters to enter name, ESC to cancel"
 
         clock.tick(60)
 
