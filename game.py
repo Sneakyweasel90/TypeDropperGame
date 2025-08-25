@@ -64,6 +64,11 @@ def play_game(difficulty):
 
     while True:
         screen.fill(WHITE)
+
+        typed_surface = letter_font.render(typed_text, True, BLACK)
+        typed_rect = typed_surface.get_rect(midbottom=(WIDTH // 2, HEIGHT - 20))
+        screen.blit(typed_surface, typed_rect)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -111,6 +116,11 @@ def play_game(difficulty):
         screen.blit(hud_font.render(f"Lives: {lives}", True, WHITE), (padding, bar_height // 4))
         screen.blit(hud_font.render(f"Speed: {fall_speed:.1f}", True, WHITE), (WIDTH // 2 - 50, bar_height // 4))
         screen.blit(hud_font.render(f"Score: {score}", True, WHITE), (WIDTH - 150 - padding, bar_height // 4))
+
+        # --- Show what the player is typing at the bottom ---
+        typed_surface = letter_font.render(typed_text, True, BLACK)
+        typed_rect = typed_surface.get_rect(midbottom=(WIDTH // 2, HEIGHT - 20))
+        screen.blit(typed_surface, typed_rect)
 
         pygame.display.flip()
         clock.tick(60)
