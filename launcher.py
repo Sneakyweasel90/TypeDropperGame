@@ -64,12 +64,12 @@ def attempt_update(exe_url, hash_url):
 
             actual_hash = calculate_sha256(GAME_FILE)
             if actual_hash != expected_hash:
-                print("⚠️ Hash mismatch! Download may be corrupted or tampered.")
+                print("Hash mismatch! Download may be corrupted or tampered.")
                 os.remove(GAME_FILE)
                 return False
-            print("Hash verified successfully ✅")
+            print("Hash verified successfully")
         else:
-            print("⚠️ No checksum file provided. Skipping verification.")
+            print("No checksum file provided. Skipping verification.")
 
         return True
     except Exception as e:
