@@ -1,6 +1,7 @@
 # This is a small Python game I've been building
 
-To run this game you can either download PyCharm and run the file or you can run the main file in the dist file
+You can now go to this link and download the Launcher. No need to download the main file anymore. Just double clikc the launcher and it will update the game to the newest version there is!
+https://github.com/Sneakyweasel90/TypeDropperGame/releases
 
 Small look at the game itself. This game is still in development as well!
 
